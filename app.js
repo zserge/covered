@@ -3,7 +3,7 @@ new Vue({
   data: {
     key: 0,
     text: 'Hello.',
-    mode: 'picture',
+    mode: 'color',
     color: '#ffeb3b',
     gradient: '#fdc78d,#f98ffd',
     keywords: '',
@@ -25,19 +25,19 @@ new Vue({
 
       <transition name="fade">
         <ul v-if="isModePickerShown" class="picker picker-mode">
-          <li v-on:click="selectMode('color')"><img src="circle.svg"> Color</li>
-          <li v-on:click="selectMode('gradient')"><img src="square.svg"> Gradient</li>
-          <li v-on:click="selectMode('trianglify')"><img src="triangle.svg"> Trianglify</li>
-          <li v-on:click="selectMode('picture')"><img src="image.svg"> Picture</li>
+          <li v-on:click="selectMode('color')"><img src="svg/circle.svg"> Color</li>
+          <li v-on:click="selectMode('gradient')"><img src="svg/square.svg"> Gradient</li>
+          <li v-on:click="selectMode('trianglify')"><img src="svg/triangle.svg"> Trianglify</li>
+          <li v-on:click="selectMode('picture')"><img src="svg/image.svg"> Picture</li>
         </ul>
       </transition>
 
 			<div v-on:click="isModePickerShown = !isModePickerShown" class="btn btn-mode">
-				<img v-if="!isModePickerShown && mode == 'color'" src="circle.svg" />
-				<img v-if="!isModePickerShown && mode == 'gradient'" src="square.svg" />
-				<img v-if="!isModePickerShown && mode == 'trianglify'" src="triangle.svg" />
-				<img v-if="!isModePickerShown && mode == 'picture'" src="image.svg" />
-				<img v-if="isModePickerShown" src="x.svg" />
+        <img v-if="!isModePickerShown && mode == 'color'" src="svg/circle.svg" />
+        <img v-if="!isModePickerShown && mode == 'gradient'" src="svg/square.svg" />
+        <img v-if="!isModePickerShown && mode == 'trianglify'" src="svg/triangle.svg" />
+        <img v-if="!isModePickerShown && mode == 'picture'" src="svg/image.svg" />
+        <img v-if="isModePickerShown" src="svg/x.svg" />
 			</div>
 
       <transition name="fade">
@@ -55,9 +55,9 @@ new Vue({
       </transition>
 			<div v-if="mode =='color'" class="picker-details">
 				<img v-if="!isColorPickerShown" v-on:click="isColorPickerShown=true"
-					class="chevron" src="chevron-down.svg" />
+          class="chevron" src="svg/chevron-down.svg" />
 				<img v-if="isColorPickerShown" v-on:click="isColorPickerShown=false"
-					class="chevron" src="chevron-up.svg" />
+          class="chevron" src="svg/chevron-up.svg" />
 				<input v-model="color" />
 			</div>
 
@@ -76,9 +76,9 @@ new Vue({
       </transition>
 			<div v-if="mode =='gradient'" class="picker-details">
 				<img v-if="!isGradientPickerShown" v-on:click="isGradientPickerShown=true"
-					class="chevron" src="chevron-down.svg" />
+          class="chevron" src="svg/chevron-down.svg" />
 				<img v-if="isGradientPickerShown" v-on:click="isGradientPickerShown=false"
-					class="chevron" src="chevron-up.svg" />
+          class="chevron" src="svg/chevron-up.svg" />
 				<input v-model="gradient" />
 			</div>
 
@@ -92,8 +92,8 @@ new Vue({
           placeholder="e.g: inspire,red" />
 			</div>
 
-			<div v-on:click="copy" class="btn btn-copy"><img src="copy.svg" /></div>
-			<div v-on:click="download" class="btn btn-download"><img src="download.svg" /></div>
+      <div v-on:click="copy" class="btn btn-copy"><img src="svg/copy.svg" /></div>
+      <div v-on:click="download" class="btn btn-download"><img src="svg/download.svg" /></div>
 		</div>
 	`,
   mounted: function() {
@@ -103,6 +103,7 @@ new Vue({
     this.context = this.canvas.getContext('2d');
     this.img = this.$refs.img;
     this.key = this.key + 1;
+    this.debounceSearch(this.keywords);
   },
   methods: {
     gradientCSS: function(gradient) {
@@ -171,10 +172,6 @@ new Vue({
     },
   },
   computed: {
-    unsplashURL: function() {
-      return ``;
-      //return `https://source.unsplash.com/336x128/?${this.picture}`;
-    },
     imgSrc: function() {
       let _ = this.key;
       if (!this.context) {
