@@ -168,7 +168,14 @@ new Vue({
       document.body.removeChild(div);
     },
     download: function() {
-      // TODO
+      const a = document.createElement('a');
+      a.download = `${this.text.replace(/[^A-Za-z_-]/g, '')}.png`;
+      a.href = this.canvas.toDataURL('image/png;base64');
+      const e = document.createEvent('MouseEvents');
+      e.initMouseEvent('click', true, true, window,
+        0, 0, 0, 0, 0, false, false, false,
+        false, 0, null);
+      a.dispatchEvent(e);
     },
   },
   computed: {
